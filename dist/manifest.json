@@ -1,0 +1,23 @@
+{
+    "name": "NFT transaction energy consumption calculator",
+    "description": "Building a NFT transaction energy consumption calculator",
+    "version": "0.1.0",
+    "manifest_version": 3,
+    "icons": {
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Open the popup",
+        "default_icons": {
+        }
+    },
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "storage",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://www.google.com/*"
+    ]
+}
