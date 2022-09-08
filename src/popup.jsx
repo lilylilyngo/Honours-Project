@@ -1,67 +1,90 @@
 import React from "react";
-import { createRoot } from 'react-dom/client';
-import * as emmmos from './calculations';
-import { useState, useEffect, useRef } from 'react';
+import { createRoot } from "react-dom/client";
+import * as emmmos from "./calculations";
+import * as est from "./carbon-estimate";
+import { useState, useEffect, useRef } from "react";
 
 function Popup() {
-    const [isLoading, setLoading] = useState(true);
-    const [carbonEmission, setCarbonEmission] = useState("Enter in NTF address:");
-    
-    // useEffect(() => {
-    //     console.log("token");
+  const [isLoading, setLoading] = useState(true);
+  const [carbonFootprint, setCarbonFootprint] = useState(
+    "Enter in NTF address:"
+  );
+  const [gasUsed, setGasUsed] = useState("");
+  const [errorState, setErrorState] = useState("");
+  const [carbonEstimate, setCarbonEstimate] = useState("Loading...");
 
-    // async function getToken() {
-    //     const token = await emmmos.getString();
-    //     setCarbonEmission(token);
-    //     console.log("token");
-    //     setLoading(false);
+  useEffect(() => {
+    setEst();
+  });
 
-    // }
-    // // getToken();
-    // }, [])
+  async function setEst(address) {
+    const estt = await est.carbonEstimate();
+    console.log(estt);
+    setCarbonEstimate(estt);
+  }
+  async function getToken(address) {
+    const token = await emmmos.getString(address);
+    setCarbonFootprint(token.kgCO2);
+    setErrorState(token);
+    setGasUsed(token.gasUsed);
+    console.log(token);
+    setLoading(false);
+  }
+  const inputRef = useRef(null);
 
-    async function getToken(address) {
-          const token = await emmmos.getString(address);
-          setCarbonEmission(token);
-          console.log("token");
-          setLoading(false);
-    }
-    const inputRef = useRef(null);
+  function handleClick() {
+    getToken(inputRef.current.value);
+    console.log(inputRef.current.value);
+  }
+  function isANumber(str) {
+    return !/\D/.test(str);
+  }
 
-    function handleClick() {
-        getToken(inputRef.current.value);
-        console.log(inputRef.current.value);
-    }
-    function isANumber(str) {
-      return !/\D/.test(str);
-    } 
+  console.log(carbonFootprint);
 
-    console.log(carbonEmission);
-    // if (isLoading) {
-    //     return <div>Loading...</div>;
-    //   }
-    return (
+  return (
+    <div>
+      <h1>NFT Carbon FootPrint Calculator</h1>
+      <p> </p>
+      {!isANumber(carbonFootprint) && !isLoading ? (
         <div>
-            <h1>Hello</h1>
-            <p>Smapel ok </p>
-            {(!isANumber(carbonEmission) && !isLoading) ? ( 
-             <p style={{color: "red"}}>{carbonEmission}</p>
-            ) : (
-              <p>{carbonEmission}</p>
-            )}
-            {/* <p>{carbonEmission}</p> */}
-            <div>
-      <input
-        ref={inputRef}
-        type="text"
-        id="message"
-        name="message"
-        autoComplete="off"
-      />
-
-      <button onClick={handleClick}>Calculate NFT</button>
-    </div>
+          <p style={{ color: "red" }}>{errorState}</p>
+          <p>Enter in NFT address:</p>
         </div>
-    );
+      ) : (
+        <div>
+          {isANumber(carbonFootprint) ? (
+            <div>
+              <p>Total carbon emissions used for your NFT is</p>
+              <h3>{carbonFootprint} kilograms of CO₂ emissions</h3>
+              <p>This address transactions gas consumption</p>
+              <h3>{gasUsed} gas</h3>
+              <p>Enter in NFT address:</p>
+            </div>
+          ) : (
+            <p>{carbonFootprint}</p>
+          )}
+        </div>
+      )}
+      <div>
+        <input
+          ref={inputRef}
+          type="text"
+          id="message"
+          name="message"
+          autoComplete="off"
+          placeholder="0x Address"
+        />
+
+        <button onClick={handleClick}>Calculate NFT</button>
+      </div>
+      <div>
+        <p>
+          Estimate carbon footprint is "{carbonEstimate}" kilograms of CO₂
+          emissions.
+        </p>
+      </div>
+    </div>
+  );
 }
-createRoot(document.getElementById('react-target')).render(<Popup/>);
+createRoot(document.getElementById("react-target")).render(<Popup />);

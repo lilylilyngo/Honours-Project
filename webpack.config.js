@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
+// const FetchJsonWebpackPlugin = require("fetch-json-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -35,5 +36,6 @@ module.exports = {
       patterns: [{ from: "public" }],
     }),
     new Dotenv(),
+    // new FetchJsonWebpackPlugin(),
   ],
 };

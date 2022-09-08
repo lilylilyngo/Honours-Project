@@ -1,5 +1,4 @@
 import { calculateAddressEmissions } from "ethereum-emissions-calculator";
-import { useState } from "react";
 
 let emmmos = "appld";
 // const { calculateAddressEmissions } = www;
@@ -16,14 +15,13 @@ export async function getString(address) {
   })
     .then((res) => {
       console.log(res);
-      stream = res.kgCO2;
+      stream = res;
     })
     .catch((err) => {
-      //setErrorMessage(err);
       console.log(err.message);
       apple = err.message;
     });
-  //emmmos = emissions.kgCO2.toString;
+
   if (apple == "") {
     console.log(stream);
     return stream;
@@ -38,5 +36,3 @@ console.log(emmmos);
 //   getString();
 // };
 console.log(emmmos);
-
-// export default getString();
