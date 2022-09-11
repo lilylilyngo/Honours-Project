@@ -4,6 +4,8 @@ import * as emmmos from "./calculations";
 import * as est from "./carbon-estimate";
 import { useState, useEffect, useRef } from "react";
 
+var GG = require("greenhouse-gas");
+
 function Popup() {
   const [isLoading, setLoading] = useState(true);
   const [carbonFootprint, setCarbonFootprint] = useState(
@@ -12,6 +14,9 @@ function Popup() {
   const [gasUsed, setGasUsed] = useState("");
   const [errorState, setErrorState] = useState("");
   const [carbonEstimate, setCarbonEstimate] = useState("Loading...");
+  const [equivalentCarbon, setequivalentCarbon] = useState("");
+
+  var akpl = "";
 
   useEffect(() => {
     setEst();
@@ -29,6 +34,14 @@ function Popup() {
     setGasUsed(token.gasUsed);
     console.log(token);
     setLoading(false);
+
+    if (errorState == "") {
+      var dd = getEquivalent(token.kgCO2);
+      console.log(dd);
+      setequivalentCarbon(dd);
+      console.log("app");
+      console.log(token.kgCO2);
+    }
   }
   const inputRef = useRef(null);
 
@@ -40,7 +53,15 @@ function Popup() {
     return !/\D/.test(str);
   }
 
-  console.log(carbonFootprint);
+  // console.log(carbonFootprint);
+
+  function getEquivalent(carbonFootprints) {
+    console.log(equivalentCarbon);
+    akpl = GG.calculateEquivalency(carbonFootprints, {
+      keyList: ["coal", "phones", "miles"],
+    });
+    return akpl;
+  }
 
   return (
     <div>
@@ -56,9 +77,40 @@ function Popup() {
           {isANumber(carbonFootprint) ? (
             <div>
               <p>Total carbon emissions used for your NFT is</p>
-              <h3>{carbonFootprint} kilograms of CO₂ emissions</h3>
+              <h3>{carbonFootprint} kilograms of CO₂ emissions.</h3>
               <p>This address transactions gas consumption</p>
-              <h3>{gasUsed} gas</h3>
+              <h3 style={{ marginBlockEnd: "0em" }}>{gasUsed} gas</h3>
+              <p style={{ marginBlockStart: "0em" }}>
+                (how much computation is done).
+              </p>
+              <hr
+                style={{
+                  color: "#000000",
+                  height: 0.3,
+                }}
+              />
+              <p style={{ marginBlockEnd: "0em" }}>This is equivalent to</p>
+              <h3 style={{ marginBlockStart: "0em", marginBlockEnd: "0em" }}>
+                {Math.round(equivalentCarbon[1].value * 100) / 100}
+              </h3>
+              <p style={{ marginBlockStart: "0em" }}>smartphones charged,</p>
+              <h3 style={{ marginBlockStart: "0em", marginBlockEnd: "0em" }}>
+                {Math.round(equivalentCarbon[0].value * 100) / 100} pounds
+              </h3>
+              <p style={{ marginBlockStart: "0em" }}>of coal burned,</p>
+              <h3 style={{ marginBlockStart: "0em", marginBlockEnd: "0em" }}>
+                {Math.round(equivalentCarbon[2].value * 1.6 * 100) / 100}{" "}
+                kilometers
+              </h3>
+              <p style={{ marginBlockStart: "0em" }}>
+                driven by an average passenger vehicle.
+              </p>
+              <hr
+                style={{
+                  height: 0.3,
+                  borderColor: "#000000",
+                }}
+              />
               <p>Enter in NFT address:</p>
             </div>
           ) : (
@@ -80,8 +132,8 @@ function Popup() {
       </div>
       <div>
         <p>
-          Estimate carbon footprint is "{carbonEstimate}" kilograms of CO₂
-          emissions.
+          Estimate next carbon footprint transaction is "
+          {Math.round(carbonEstimate * 100) / 100}" kilograms of CO₂ emissions.
         </p>
       </div>
     </div>

@@ -33,7 +33,11 @@ let gasPrice = "";
 let basePrice = "";
 
 async function getEstimate() {
-  const response = await fetch(endpointEstimate)
+  const response = await fetch(endpointEstimate, {
+    method: "GET",
+    mode: "cors",
+    headers: { "Content-Type": "application/json" },
+  })
     .then(function (response) {
       if (response.status >= 400) {
         throw new Error("Bad response from server");
@@ -49,7 +53,7 @@ async function getEstimate() {
       return stories;
     });
 }
-fetch(endpointEstimate);
+// fetch(endpointEstimate);
 
 async function getGasPrice() {
   const response = await fetch(endpointGas)
