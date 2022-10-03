@@ -1,4 +1,5 @@
 import fetch from "isomorphic-fetch";
+const cors = require("cors");
 
 function getYesterdaysDate() {
   var date = new Date();
@@ -36,14 +37,19 @@ async function getEstimate() {
   const response = await fetch(endpointEstimate, {
     method: "GET",
     mode: "cors",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Origin: "*",
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Origin": "*",
+    },
   })
     .then(function (response) {
       if (response.status >= 400) {
         throw new Error("Bad response from server");
       }
       console.log(endpointEstimate);
-      // console.log(response.json().catch());
       return response.json();
     })
     .then(function (stories) {
@@ -53,7 +59,6 @@ async function getEstimate() {
       return stories;
     });
 }
-// fetch(endpointEstimate);
 
 async function getGasPrice() {
   const response = await fetch(endpointGas)
@@ -75,7 +80,5 @@ async function getGasPrice() {
 export async function carbonEstimate() {
   await getGasPrice();
   await getEstimate();
-  console.log(stream);
   return stream * gasPrice;
-  // console.log(json);
 }

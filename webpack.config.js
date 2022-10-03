@@ -2,12 +2,15 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
-// const FetchJsonWebpackPlugin = require("fetch-json-webpack-plugin");
 
 module.exports = {
+  devServer: {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  },
   entry: {
     popup: "./src/popup.jsx",
-    // background: "./src/background.jsx",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -36,6 +39,5 @@ module.exports = {
       patterns: [{ from: "public" }],
     }),
     new Dotenv(),
-    // new FetchJsonWebpackPlugin(),
   ],
 };

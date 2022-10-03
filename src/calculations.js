@@ -1,11 +1,8 @@
 import { calculateAddressEmissions } from "ethereum-emissions-calculator";
 
-let emmmos = "appld";
-// const { calculateAddressEmissions } = www;
-
 export async function getString(address) {
-  let apple = "";
-  let stream = "";
+  let response = "";
+  let emissionJSON = "";
 
   console.log(address);
   const emissions = await calculateAddressEmissions({
@@ -15,24 +12,16 @@ export async function getString(address) {
   })
     .then((res) => {
       console.log(res);
-      stream = res;
+      emissionJSON = res;
     })
     .catch((err) => {
       console.log(err.message);
-      apple = err.message;
+      response = err.message;
     });
 
-  if (apple == "") {
-    console.log(stream);
-    return stream;
+  if (response == "") {
+    console.log(emissionJSON);
+    return emissionJSON;
   }
-  return apple;
+  return response;
 }
-//emmmos = getString();
-console.log(emmmos);
-
-// export default async () => {
-//   //await getString().then((res) => (emmmos = res));
-//   getString();
-// };
-console.log(emmmos);

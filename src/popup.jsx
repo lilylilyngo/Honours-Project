@@ -9,14 +9,14 @@ var GG = require("greenhouse-gas");
 function Popup() {
   const [isLoading, setLoading] = useState(true);
   const [carbonFootprint, setCarbonFootprint] = useState(
-    "Enter in NTF address:"
+    "Enter in NFT address:"
   );
   const [gasUsed, setGasUsed] = useState("");
   const [errorState, setErrorState] = useState("");
   const [carbonEstimate, setCarbonEstimate] = useState("Loading...");
   const [equivalentCarbon, setequivalentCarbon] = useState("");
 
-  var akpl = "";
+  var calculateEquivalency = "";
 
   useEffect(() => {
     setEst();
@@ -36,10 +36,8 @@ function Popup() {
     setLoading(false);
 
     if (errorState == "") {
-      var dd = getEquivalent(token.kgCO2);
-      console.log(dd);
-      setequivalentCarbon(dd);
-      console.log("app");
+      var kgCO2Equivalant = getEquivalent(token.kgCO2);
+      setequivalentCarbon(kgCO2Equivalant);
       console.log(token.kgCO2);
     }
   }
@@ -53,14 +51,12 @@ function Popup() {
     return !/\D/.test(str);
   }
 
-  // console.log(carbonFootprint);
-
   function getEquivalent(carbonFootprints) {
     console.log(equivalentCarbon);
-    akpl = GG.calculateEquivalency(carbonFootprints, {
+    calculateEquivalency = GG.calculateEquivalency(carbonFootprints, {
       keyList: ["coal", "phones", "miles"],
     });
-    return akpl;
+    return calculateEquivalency;
   }
 
   return (
@@ -78,7 +74,7 @@ function Popup() {
             <div>
               <p>Total carbon emissions used for your NFT is</p>
               <h3>{carbonFootprint} kilograms of CO₂ emissions.</h3>
-              <p>This address transactions gas consumption</p>
+              <p>This NFT address total gas consumption is </p>
               <h3 style={{ marginBlockEnd: "0em" }}>{gasUsed} gas</h3>
               <p style={{ marginBlockStart: "0em" }}>
                 (how much computation is done).
@@ -89,7 +85,9 @@ function Popup() {
                   height: 0.3,
                 }}
               />
-              <p style={{ marginBlockEnd: "0em" }}>This is equivalent to</p>
+              <p style={{ marginBlockEnd: "0em" }}>
+                This NFT carbon emissions consumption is equivalent to
+              </p>
               <h3 style={{ marginBlockStart: "0em", marginBlockEnd: "0em" }}>
                 {Math.round(equivalentCarbon[1].value * 100) / 100}
               </h3>
