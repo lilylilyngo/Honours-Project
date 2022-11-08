@@ -1,6 +1,7 @@
 import fetch from "isomorphic-fetch";
 const cors = require("cors");
 
+// Function gets yesterdays dates
 function getYesterdaysDate() {
   var date = new Date();
   date.setDate(date.getDate() - 2);
@@ -21,6 +22,7 @@ function getYesterdaysDate() {
   );
 }
 
+// The links for the APIs
 const endpointEstimate =
   "https://digiconomist.net/wp-json/mo/v1/ethereum/stats/" +
   getYesterdaysDate();
@@ -33,6 +35,7 @@ let stream = "";
 let gasPrice = "";
 let basePrice = "";
 
+// Fetches the estimated for gas units
 async function getEstimate() {
   const response = await fetch(endpointEstimate, {
     method: "GET",
@@ -60,6 +63,7 @@ async function getEstimate() {
     });
 }
 
+// Fetches the gass prices
 async function getGasPrice() {
   const response = await fetch(endpointGas)
     .then(function (response) {

@@ -22,11 +22,13 @@ function Popup() {
     setEst();
   });
 
+  // Sets estimated carbon emissions
   async function setEst(address) {
     const estt = await est.carbonEstimate();
     console.log(estt);
     setCarbonEstimate(estt);
   }
+  // Sets carbon emissions
   async function getToken(address) {
     const token = await emmmos.getString(address);
     setCarbonFootprint(token.kgCO2);
@@ -43,14 +45,17 @@ function Popup() {
   }
   const inputRef = useRef(null);
 
+  // Get the NFT address
   function handleClick() {
     getToken(inputRef.current.value);
     console.log(inputRef.current.value);
   }
+  // Checks to see if it is a number
   function isANumber(str) {
     return !/\D/.test(str);
   }
 
+  // Get the emissions equivalency
   function getEquivalent(carbonFootprints) {
     console.log(equivalentCarbon);
     calculateEquivalency = GG.calculateEquivalency(carbonFootprints, {

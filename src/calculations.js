@@ -5,6 +5,7 @@ export async function getString(address) {
   let emissionJSON = "";
 
   console.log(address);
+  // Function to get the NFTs emissions
   const emissions = await calculateAddressEmissions({
     transactionType: "eth", // "eth" | "erc20" | "erc721"
     address: address, // 0x063dd253c8da4ea9b12105781c9611b8297f5d14

@@ -9,7 +9,6 @@
     "default_title": "Open the popup",
     "default_icons": {}
   },
-  "permissions": ["activeTab", "tabs", "storage", "scripting"],
   "host_permissions": [
     "https://www.google.com/*",
     "https://digiconomist.net/wp-json/mo/v1/ethereum/stats/*"
